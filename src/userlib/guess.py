@@ -1,6 +1,5 @@
 import numpy as np
 import pickle
-from scipy.special import entr
 import bisect
 
 CORRECT = 242
@@ -43,7 +42,7 @@ class Guesser():
             return self.words[self.guess_index]
         counts = np.apply_along_axis(np.bincount, 1, self.arr, minlength=NBINS).astype(float)
         counts /= ncols
-        self.guess_index = entr(counts).sum(axis=1).argmax()
+        self.guess_index = np.sum(-counts * np.log2(counts, where=(counts != 0)), axis=1).argmax()
         return self.words[self.guess_index]
         
     def update(self, feedback: int):

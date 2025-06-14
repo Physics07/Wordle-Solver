@@ -96,18 +96,18 @@ class Solver:
             .strip()
             .lower()
         )
-        print(response)
+
         self.guessers[problem_id].update(Guesser.convert_feedback_to_int(response))
 
         self.snowflake_calls += 1
 
         guess = self.guessers[problem_id].find_guess()
-        print(guess)
+        
         last_feedback = history[-1] if history else "None"
         self.previous_guess[problem_id] = guess
         self._log(f"Turn {turn}: Received feedback: {last_feedback}")
         self._log(f"Turn {turn}: Guess: {guess}")
-        self._log(f"Response: {response}")
+        
         return guess
 
     def _log(self, msg):
