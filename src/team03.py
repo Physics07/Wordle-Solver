@@ -82,11 +82,11 @@ class Solver:
             "3. If the query contains matching but misplaced letters, they are marked as either 'Y' or 'G', such that:\n"
             "• The total number of B's and Y's assigned to a character cannot exceed its count in the answer.\n"
             "• All G's, if any, must appear after all Y's for that character.\n"
-            "For example, if the answer is 'tweet', and the query is 'melee', then the result string is 'GYGBG'. You should return only 'GYGBG' for this example.\n"
-            "Return ONLY the result string(your response needs to consist of 5 uppercase letters)."
+            "For example, if the answer is 'tweet', and the query is 'melee', then the result string is 'G Y G B G'. You should return only 'G Y G B G' for this example.\n"
+            "Return ONLY the result string and do not return any other text (your response needs to consist of 5 uppercase letters, with spaces inbetween each one)."
         )
 
-        response = (
+        response = "".join(
             complete(
                 model=self.model,
                 prompt=[{"role": "user", "content": prompt}],
@@ -95,6 +95,7 @@ class Solver:
             )
             .strip()
             .lower()
+            .split()
         )
 
         self.guessers[problem_id].update(Guesser.convert_feedback_to_int(response))

@@ -17,6 +17,7 @@ class Guesser():
         for word in wordlist:
             is_in_wordlist[bisect.bisect_left(all_words, word)] = True
         self.arr = self.arr[is_in_wordlist][:, is_in_wordlist]
+        self.default = self.arr.copy()
         self.words = sorted(wordlist)
         self.word_index = np.arange(len(wordlist))
         self.guess_index = None
@@ -54,6 +55,10 @@ class Guesser():
         self.arr = self.arr[:, flag]
         self.word_index = self.word_index[flag]
 
+        if self.arr.shape[1] == 0:
+            # if the LLM returned garbage answer
+            self.arr = self.default.copy()
+            self.word_index = np.arange(self.arr.shape[1])
 
 # testing
 if __name__ == "__main__":
@@ -79,8 +84,15 @@ if __name__ == "__main__":
                     break
         return result
 
-    guesser = Guesser("./data/", ["crane", "flame", "slate"])
+    guesser = Guesser("./data/",  ["apple","abhor","acres","baron","billy","bimbo","renal","romeo"])
     guess = guesser.find_guess()
     print(guess)
-    guesser.update(check("crane", guess))
-    print(guesser)
+    guesser.update(check("baron", guess))
+    guess = guesser.find_guess()
+    print(guess)
+    # guesser.update(check("baron", guess))
+    # guess = guesser.find_guess()
+    # print(guess)
+    # guesser.update(check("baron", guess))
+    # guess = guesser.find_guess()
+    # print(guess)
