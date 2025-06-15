@@ -38,7 +38,7 @@ class Guesser():
     def find_guess(self) -> str:
         # returns Argmax(entropy)
         ncols = self.arr.shape[1]
-        if ncols == 1:
+        if ncols == 1 or ncols == 2:
             self.guess_index = self.word_index[0]
             return self.words[self.guess_index]
         counts = np.apply_along_axis(np.bincount, 1, self.arr, minlength=NBINS).astype(float)
