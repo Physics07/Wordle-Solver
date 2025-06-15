@@ -1,6 +1,5 @@
 import numpy as np
 import pickle
-import bisect
 
 CORRECT = 242
 NBINS = 243
@@ -9,13 +8,13 @@ class Guesser():
     def __init__(self, dir: str, wordlist: list):
         with open(dir + "table", "rb") as f:
             self.arr: np.ndarray = pickle.load(f)
-        with open(dir + "wordlist", "rb") as f:
-            all_words: list[str] = pickle.load(f)
+        with open(dir + "wordindex", "rb") as f:
+            all_words: dict = pickle.load(f)
 
         # Select the words in the problem word pool
         is_in_wordlist = [False for i in range(len(all_words))]
         for word in wordlist:
-            is_in_wordlist[bisect.bisect_left(all_words, word)] = True
+            is_in_wordlist[all_words[word]] = True
         self.arr = self.arr[is_in_wordlist][:, is_in_wordlist]
         self.default = self.arr.copy()
         self.words = sorted(wordlist)
@@ -84,7 +83,8 @@ if __name__ == "__main__":
                     break
         return result
 
-    guesser = Guesser("./data/",  ["apple","abhor","acres","baron","billy","bimbo","renal","romeo"])
+    guesser = Guesser("./data/",  ["apple","abhor","baron","billy","bimbo","acres","renal","romeo"])
+    print(guesser.words)
     guess = guesser.find_guess()
     print(guess)
     guesser.update(check("baron", guess))
