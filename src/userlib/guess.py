@@ -83,11 +83,10 @@ if __name__ == "__main__":
                     break
         return result
 
-    guesser = Guesser("./data/",  ["apple","abhor","baron","billy","bimbo","acres","renal","romeo"])
-    print(guesser.words)
-    guess = guesser.find_guess()
-    print(guess)
-    guesser.update(check("baron", guess))
+    import json
+    with open("./data/problem.json", "r") as f:
+        data = json.load(f)
+    guesser = Guesser("./data/",  data["candidate_words"])
     guess = guesser.find_guess()
     print(guess)
     # guesser.update(check("baron", guess))

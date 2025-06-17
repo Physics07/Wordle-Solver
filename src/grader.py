@@ -1,14 +1,19 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor
 import time
+import json
 
 STUDENTS = {
     "team00": "http://localhost:8000",
 }
 
+with open("./data/problem.json", "r") as f:
+    data = json.load(f)
+
 PROBLEMS = {
     "1": {"secret_word": "flame", "candidate_words": ["crane", "flame", "slate"]},
     "2": {"secret_word": "altar", "candidate_words": ["apple", "altar", "adapt"]},
+    "3": data
 }
 
 
